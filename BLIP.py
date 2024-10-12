@@ -18,5 +18,3 @@ def generate(image_url):
     caption = processor.decode(outputs[0], skip_special_tokens=True)
 
     return caption
-
-print(generate('redbull.jpg'))

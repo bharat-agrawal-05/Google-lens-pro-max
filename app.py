@@ -44,6 +44,7 @@ def search(keywords):
 def index():
     if request.method == 'POST':
         file = request.files['image']
+        prompt = request.form['prompt']
         image_path = f"./static/{file.filename}"
         
         # Ensure the directory exists
@@ -54,7 +55,8 @@ def index():
         
         # Generate caption
         caption = generate_caption(image_path)
-        
+        caption = "I have a image with content: " + caption + " " + prompt
+        print(caption)
         # Search using the generated caption
         results = search(caption)
         

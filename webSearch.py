@@ -16,5 +16,3 @@ def search(keywords):
     print(results)
     results_df = pd.DataFrame(results)
     results_df.to_csv(f'{''.join(keywords.split())}.csv', index=False)
-
-search('red bull')
