@@ -1,1 +1,3 @@
 duckduckgo-search
+torch
+clip-interrogator
