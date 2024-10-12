@@ -1,36 +1,37 @@
-from clip_interrogator import Config, Interrogator
+
+from transformers import VisionEncoderDecoderModel, ViTImageProcessor, AutoTokenizer
 import torch
+from PIL import Image
 
-config = Config()
-config.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-config.blip_offload = False if torch.cuda.is_available() else True
-config.chunk_size = 2048
-config.flavor_intermediate_count = 512
-config.blip_num_beams = 64
-ci = Interrogator(config)
+model = VisionEncoderDecoderModel.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+feature_extractor = ViTImageProcessor.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+tokenizer = AutoTokenizer.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
 
-def inference(image, mode , best_max_flavors):
-    image = image.convert('RGB')
-    if mode == 'best':
-        
-        prompt_result = ci.interrogate(image, max_flavors=int(best_max_flavors))
-        
-        print("mode best: " + prompt_result)
-        
-        return prompt_result
-    
-    elif mode == 'classic':
-        
-        prompt_result = ci.interrogate_classic(image)
-        
-        print("mode classic: " + prompt_result)
-        
-        return prompt_result
-    
-    else:
-        
-        prompt_result = ci.interrogate_fast(image)
-        
-        print("mode fast: " + prompt_result)
-        
-        return prompt_result
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)
+
+
+
+max_length = 16
+num_beams = 4
+gen_kwargs = {"max_length": max_length, "num_beams": num_beams}
+def predict_step(image_paths):
+  images = []
+  for image_path in image_paths:
+    i_image = Image.open(image_path)
+    if i_image.mode != "RGB":
+      i_image = i_image.convert(mode="RGB")
+
+    images.append(i_image)
+
+  pixel_values = feature_extractor(images=images, return_tensors="pt").pixel_values
+  pixel_values = pixel_values.to(device)
+
+  output_ids = model.generate(pixel_values, **gen_kwargs)
+
+  preds = tokenizer.batch_decode(output_ids, skip_special_tokens=True)
+  preds = [pred.strip() for pred in preds]
+  return preds
+
+
+predict_step(['doctor.e16ba4e4.jpg']) # ['a woman in a hospital bed with a woman in a hospital bed']

@@ -14,9 +14,7 @@ def search(keywords):
 
     # Print the results for verification
     print(results)
-
-    # Create a DataFrame from the results
     results_df = pd.DataFrame(results)
+    results_df.to_csv(f'{''.join(keywords.split())}.csv', index=False)
 
-    # Save the DataFrame to a CSV file
-    results_df.to_csv('duckduck_tutorial.csv', index=False)
+search('red bull')
