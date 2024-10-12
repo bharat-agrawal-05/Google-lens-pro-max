@@ -55,7 +55,7 @@ def index():
         
         # Generate caption
         caption = generate_caption(image_path)
-        caption = "I have a image with content: " + caption + " " + prompt
+        caption = f"I have a image with content:{caption} and I want to search for {prompt}"
         print(caption)
         # Search using the generated caption
         results = search(caption)
