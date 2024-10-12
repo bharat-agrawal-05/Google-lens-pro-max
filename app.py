@@ -36,7 +36,7 @@ def search(keywords):
 
     # Convert results to DataFrame and save to CSV
     results_df = pd.DataFrame(results)
-    results_df.to_csv(f'{''.join(search_query.split())}.csv', index=False)
+    results_df.to_csv(f'{''.join(search_query.split())}.csv', index=True)
 
     return results
 
