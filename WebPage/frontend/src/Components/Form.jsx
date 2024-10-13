@@ -15,15 +15,24 @@ const Form = () => {
   const [btn, setBtn] = useState(faArrowUp)
   const fileRef = useRef(null);
   const textAreaRef = useRef(null);
+  const controllerRef = useRef(null);
 
   useEffect(() => {
-    if (csvData.length === 0 || fileName === 'Upload your image here') {
-      setHidden('hidden');
-    }
-    else {
+    if (csvData.length !== 0) {
       setHidden('');
     }
-  }, [csvData, fileName])
+    else {
+      setHidden('hidden');
+    }
+  }, [csvData])
+
+  useEffect(() => {
+    // if (fileName === 'Upload your image here') {
+    //   setHidden('hidden');
+    // }
+    setHidden('hidden');
+    setPromptValue('');
+  }, [fileName])
 
   const handleFileNameChange = (e) => {
     const file = e.target.files[0]
@@ -38,6 +47,14 @@ const Form = () => {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
+
+    if (controllerRef.current && btn === faStopCircle) {
+      controllerRef.current.abort();
+      setBtn(faArrowUp);
+      return ;
+    }
+    controllerRef.current = new AbortController();
+    const signal = controllerRef.current.signal;
     setBtn(faStopCircle);
     const file = fileRef.current.files[0];
     const prompt = textAreaRef.current.value;
@@ -48,7 +65,8 @@ const Form = () => {
       const res = await axios.post('http://localhost:8000/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
-        }
+        },
+        signal: signal
       });
       const file = res.data;
 
@@ -69,9 +87,6 @@ const Form = () => {
       console.log(e)
     }
     setBtn(faArrowUp);
-    if (btn == faArrowUp) {
-      console.log('hi')
-    }
   }
 
   useGSAP(() => {

@@ -25,7 +25,8 @@ const upload = multer({ storage: storage });
 
 app.post('/upload', upload.single('file'), (req, res) => {
     const prompt = req.body.prompt;
-    const pythonProcess = spawn('python3', ['script.py', prompt]);
+    const imgPath = path.join(__dirname, 'uploads', 'input-file.png');
+    const pythonProcess = spawn('python3', ['script.py', imgPath, prompt]);
     pythonProcess.on('close', (code) => {
         if (code === 0) {
           const csvFilePath = path.join(__dirname, 'output.csv'); 

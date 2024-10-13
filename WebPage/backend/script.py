@@ -1,8 +1,7 @@
 import sys
 import csv
-import time
 
-def generate_csv(prompt):
+def generate_csv(imgPath, prompt):
     filename = 'output.csv'
     
     with open(filename, mode='w', newline='') as file:
@@ -14,10 +13,10 @@ def generate_csv(prompt):
     print(f'CSV file "{filename}" generated successfully')
 
 if __name__ == '__main__':
-    time.sleep(5)
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 3:
         print('Prompt is required')
         sys.exit(1)
 
-    prompt = sys.argv[1]
-    generate_csv(prompt)
+    imgPath = sys.argv[1]
+    prompt = sys.argv[2]
+    generate_csv(imgPath, prompt)
