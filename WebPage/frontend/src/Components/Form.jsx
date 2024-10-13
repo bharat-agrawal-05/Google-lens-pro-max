@@ -11,6 +11,7 @@ const Form = () => {
   const [promptValue, setPromptValue] = useState('')
   const [fileName, setFileName] = useState('Upload your image here')
   const [csvData, setCsvData] = useState([]);
+  const [caption, setCaption] = useState('');
   const [hidden, setHidden] = useState('hidden')
   const [btn, setBtn] = useState(faArrowUp)
   const fileRef = useRef(null);
@@ -27,9 +28,8 @@ const Form = () => {
   }, [csvData])
 
   useEffect(() => {
-    // if (fileName === 'Upload your image here') {
-    //   setHidden('hidden');
-    // }
+    setCsvData([]);
+    setCaption('');
     setHidden('hidden');
     setPromptValue('');
   }, [fileName])
@@ -70,12 +70,18 @@ const Form = () => {
       });
       const file = res.data;
 
+      const capRes = await axios.get('http://localhost:8000/caption', {
+        responseType: 'text'
+      });
+
       if (file) {
         Papa.parse(file, {
           header: true,
           skipEmptyLines: true,
           complete: (result) => {
             setCsvData(result.data)
+            setCaption(capRes.data)
+            console.log(caption)
           },
           error: (error) => {
             console.error('Error parsing CSV file:', error);
@@ -139,11 +145,13 @@ const Form = () => {
             </form>
 
             <div className = {`bg-zinc w-[95%] h-full mb-5 p-5 rounded-xl text-gray-500 ${hidden}`}>
+              <h1 className = 'text-2xl font-medium'>Query</h1>
+              <p className = 'text-xl text-gray-500 mb-5'>{caption}</p>
               <h1 className = 'text-2xl font-medium'>Generated Links</h1>
               <div className = 'flex flex-col w-full h-[90%] overflow-y-auto'>
-                {csvData.map((row) => {
+                {csvData.map((row, index) => {
                    return  (
-                    <div key = {row.index} className = 'flex items-center m-1 '>
+                    <div key = {index} className = 'flex items-center m-1 '>
                       <a href = {row.href} target = '_blank' rel = 'noreferrer'>{row.href}</a>
                     </div>
                   )
