@@ -1,0 +1,5 @@
+tf-keras
+sentence-transformers
+transformers
+faiss
+faiss-cpu
