@@ -16,6 +16,13 @@ cd Google-lens-pro-max
 pip install -r requirements.txt
 npm install
 ```
+
+### Go to WebPage Folder 
+
+```bash
+cd Webpage
+```
+
 ### Start the backend server 
 
 ```bash
