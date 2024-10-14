@@ -12,6 +12,7 @@ const Form = () => {
   const [fileName, setFileName] = useState('Upload your image here')
   const [csvData, setCsvData] = useState([]);
   const [caption, setCaption] = useState('');
+  const [notLoading, setNotLoading] = useState('hidden');
   const [hidden, setHidden] = useState('hidden')
   const [btn, setBtn] = useState(faArrowUp)
   const fileRef = useRef(null);
@@ -51,11 +52,13 @@ const Form = () => {
     if (controllerRef.current && btn === faStopCircle) {
       controllerRef.current.abort();
       setBtn(faArrowUp);
+      setNotLoading('hidden');
       return ;
     }
     controllerRef.current = new AbortController();
     const signal = controllerRef.current.signal;
     setBtn(faStopCircle);
+    setNotLoading('');
     const file = fileRef.current.files[0];
     const prompt = textAreaRef.current.value;
     const formData = new FormData();
@@ -92,6 +95,7 @@ const Form = () => {
     catch(e) {
       console.log(e)
     }
+    setNotLoading('hidden');
     setBtn(faArrowUp);
   }
 
@@ -138,9 +142,14 @@ const Form = () => {
                   className = {`sm:text-3xl text-xl sm:ml-10 ml-5 w-[90%] bg-transparent text-gray-500 outline-none h-12 resize-none placeholder-gray-500`}
                   required
                 />
-                <button type = "submit" className = 'mr-5'>
-                  <FontAwesomeIcon icon = {btn} className = 'text-2xl cursor-pointer text-gray-500'/>
-                </button>
+                <div className = 'relative inline-block cursor-pointer'>
+                  <button type = "submit" className = 'mr-5 cursor-pointer'>
+                    <FontAwesomeIcon icon = {btn} className = 'text-2xl cursor-pointer text-gray-500'/>
+                  </button>
+                  <div className={`absolute -top-1 -left-1 flex items-center justify-center mr-5 ${notLoading}`}>
+                    <div className="z-10 w-8 h-8 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+                  </div>
+                </div>
               </div>
             </form>
 
@@ -150,9 +159,12 @@ const Form = () => {
               <h1 className = 'text-2xl font-medium'>Generated Links</h1>
               <div className = 'flex flex-col w-full h-[90%] overflow-y-auto'>
                 {csvData.map((row, index) => {
-                   return  (
-                    <div key = {index} className = 'flex items-center m-1 '>
-                      <a href = {row.href} target = '_blank' rel = 'noreferrer'>{row.href}</a>
+                  return  (
+                    <div key = {index} className = 'flex flex-col items-start m-1 '>
+                      <a href = {row.href} target = '_blank' rel = 'noreferrer' className = 'text-xl text-gray-200 underline'>{row.title}</a>
+                      <span key = {index} className = 'ml-4 mb-4'>
+                        {row.body}
+                      </span>
                     </div>
                   )
                 })}
