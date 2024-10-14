@@ -1,4 +1,0 @@
-duckduckgo-search
-torch
-requests
-ollama
