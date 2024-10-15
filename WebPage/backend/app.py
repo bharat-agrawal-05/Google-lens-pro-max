@@ -1,4 +1,3 @@
-from flask import Flask, request, render_template
 from PIL import Image
 import os
 import sys
@@ -6,7 +5,6 @@ from transformers import BlipProcessor, BlipForConditionalGeneration
 import pandas as pd
 from duckduckgo_search import DDGS
 
-app = Flask(__name__)
 
 # Load the BLIP model and processor
 model_name = "Salesforce/blip-image-captioning-base"
