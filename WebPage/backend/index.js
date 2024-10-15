@@ -7,7 +7,7 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = 8000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
       cb(null, './uploads')
     },
     filename: function (req, file, cb) {
-      fileExt = file.originalname.split('.').pop();
+      fileExt = file.originalname.split('.').pop().toLowerCase();
       fileName = 'input-file' + '.' + fileExt;
       cb(null, fileName)
     }
