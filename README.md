@@ -63,6 +63,8 @@ WebPage/
 - Python
 - BLIP (Bootstrapping Language-Image Pre-training) model
 - DuckDuckGo API for web search
+- Express JS
+
 
 ### Frontend:
 - React.js
@@ -111,6 +113,11 @@ The search is configured to:
 - Providing results in a structured format (**CSV**) for easy analysis and further processing.
 
 The solution enhances search efficiency by bridging the gap between visual inputs and textual queries, allowing for more context-aware and specific search results that align closely with the user's needs.
+
+## More info about our struggles
+
+We used BLIP model, as it was light and was doing the job sufficiently, We also wanted to use LLaVA and LLaMa-vision models but they were pretty huge ;(.
+
 
 
 
