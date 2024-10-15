@@ -2,5 +2,5 @@ duckduckgo-search
 torch
 requests
 ollama
-tranformers
+transformers
 pillow
