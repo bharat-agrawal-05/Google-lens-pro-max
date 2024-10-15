@@ -7,7 +7,7 @@ from duckduckgo_search import DDGS
 
 
 # Load the BLIP model and processor
-model_name = "Salesforce/blip-image-captioning-base"
+model_name = "Salesforce/blip-image-captioning-large"
 processor = BlipProcessor.from_pretrained(model_name)
 model = BlipForConditionalGeneration.from_pretrained(model_name)
 
