@@ -12,7 +12,7 @@ WebPage/
 │   ├── src/
 │   │   ├── components/
 │   │   ├── App.jsx
-│   │   └── index.jsx
+│   │   └── index.html
 │
 ├── requirements.txt
 └── README.md
